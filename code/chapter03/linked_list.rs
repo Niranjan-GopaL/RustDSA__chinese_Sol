@@ -1,9 +1,11 @@
 // linked_list.rs
 
 // 节点链接用 Box 指针（大小确定），因为确定大小才能分配内存
+// The node link is determined by BOX pointer (determined size), because the size can be allocated to allocate memory
 type Link<T> = Option<Box<Node<T>>>;
 
 // 链表定义
+// Links definition
 pub struct List<T> {
     size: usize,   // 链表节点数
     head: Link<T>, // 头节点
@@ -32,6 +34,7 @@ impl<T> List <T> {
     }
 
     // 新节点总是加到头部，
+// The new node is always added to the head,
     pub fn push(&mut self, elem: T) {
         let node = Box::new(Node {
             elem: elem,
@@ -42,6 +45,7 @@ impl<T> List <T> {
     }
 
     // take 会取出数据留下空位
+// take to take out the data and leave the empty position
     pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|node| {
             self.head = node.next;
@@ -51,6 +55,7 @@ impl<T> List <T> {
     }
 
     // peek 不改变值，只能是引用
+// peek does not change the value, it can only be quoted
     pub fn peek(&self) -> Option<&T> {
         self.head.as_ref().map(|node| &node.elem )
     }
@@ -61,9 +66,13 @@ impl<T> List <T> {
     }
 
     // 以下是实现的三种迭代功能
+// The following are the three iteration functions of implementation
     // into_iter: 链表改变，成为迭代器
+// into_iter: The linked list changes to become iterators
     // iter: 链表不变，只得到不可变迭代器
+// iter: The linked list is unchanged, only the unsusable iterator is obtained
     // iter_mut: 链表不变，得到可变迭代器
+// iter_mut: The linked list is unchanged, and the variable iterator is obtained
     pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
     }
@@ -78,6 +87,7 @@ impl<T> List <T> {
 }
 
 // 实现三种迭代功能
+// Implement three iterative functions
 pub struct IntoIter<T>(List<T>);
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
@@ -109,6 +119,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 }
 
 // 为链表实现自定义 Drop
+// To achieve custom DROP for the linked list
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
         let mut link = self.head.take();

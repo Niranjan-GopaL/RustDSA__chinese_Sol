@@ -9,6 +9,7 @@ fn sum_of_val(nums: &[i32], num: i32) -> i32 {
 }
 
 // 优化版
+// Optimized version
 fn sum_of_val2(nums: &[i32], num: i32) -> i32 {
     nums.iter().sum::<i32>() + num
 }
